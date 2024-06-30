@@ -9,6 +9,7 @@ import { fetchUser } from '../features/users/userSlice';
 import { Poll } from './Poll';
 import { LoadingStatus } from '../app/util';
 import { NewQuestion } from './NewQuestion';
+import { Leaderboard } from './Leaderboard';
 
 function App() {
   const dispatch = useDispatch()
@@ -34,6 +35,7 @@ function App() {
       {loadingQuestion === LoadingStatus.SUCCESS && <Dashboard/>}
       {/* {loadingUser === LoadingStatus.SUCCESS && <Poll id="8xf0y6ziyjabvozdd253nd"/>} */}
       { authedUser && <NewQuestion/>}
+      {loadingUser === LoadingStatus.SUCCESS && <Leaderboard/>}
     </div>
   );
 }

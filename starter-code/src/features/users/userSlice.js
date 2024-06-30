@@ -39,4 +39,16 @@ export const getAllUsers = (state) => Object.values(state.users).map(user => ({
     avatarURL: user.avatarURL,
 }))
 
+export const selectUserByLeaderdoard = createSelector([state => state.users], 
+    (users) => Object.values(users.items).map(i => {
+        const {id, name, avatarURL, answers, questions} = i;
+        return {
+            id,
+            name,
+            avatarURL,
+            question: questions.length,
+            answer: Object.entries(answers).length
+        }
+    }))
+
 export const getUserById = createSelector([state => state.users, (state, userId) => userId], (users, userId) => (users.items[userId]))
