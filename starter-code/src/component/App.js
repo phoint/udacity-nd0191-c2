@@ -8,24 +8,32 @@ import { login } from '../features/authedUser/authedUserSlice';
 import { fetchUser } from '../features/users/userSlice';
 import { Poll } from './Poll';
 import { LoadingStatus } from '../app/util';
+import { NewQuestion } from './NewQuestion';
 
 function App() {
   const dispatch = useDispatch()
   const loadingQuestion = useSelector(state => state.questions.status)
   const loadingUser = useSelector(state => state.users.status)
+  const authedUser = useSelector(state => state.authedUser.id)
   useEffect(() => {
-    dispatch(login({
-      id:"sarahedo",
-      name:"Sarah Edo"
-    }));
-    dispatch(fetchQuestions());
-    dispatch(fetchUser());
-  },[dispatch])
+    handleInitialData(dispatch);
+  }
+  ,[dispatch])
+
+  const handleInitialData = (dispatch) => {
+      dispatch(login({
+        id:"sarahedo",
+        name:"Sarah Edo"
+      }));
+      dispatch(fetchQuestions());
+      dispatch(fetchUser());
+  }
 
   return (
     <div className="App">
       {loadingQuestion === LoadingStatus.SUCCESS && <Dashboard/>}
-      {loadingUser === LoadingStatus.SUCCESS && <Poll id="8xf0y6ziyjabvozdd253nd"/>}
+      {/* {loadingUser === LoadingStatus.SUCCESS && <Poll id="8xf0y6ziyjabvozdd253nd"/>} */}
+      { authedUser && <NewQuestion/>}
     </div>
   );
 }

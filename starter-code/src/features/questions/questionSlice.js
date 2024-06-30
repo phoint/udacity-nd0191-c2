@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSelector, createSlice } from "@reduxjs/toolkit";
 import { LoadingStatus } from "../../app/util";
-import { _getQuestions } from "../../_DATA";
+import { _getQuestions, _saveQuestion } from "../../_DATA";
 
 const initialState = {
     items: {},
@@ -15,11 +15,18 @@ const questionsSlice = createSlice({
     extraReducers(builder) {
         builder.addCase(fetchQuestions.pending, (state, action) => {
             state.status = LoadingStatus.PENDING
-        })
-        .addCase(fetchQuestions.fulfilled, (state, action) => {
+        }).addCase(fetchQuestions.fulfilled, (state, action) => {
             state.status = LoadingStatus.SUCCESS
             state.items = action.payload
         }).addCase(fetchQuestions.rejected, (state, action) => {
+            state.status = LoadingStatus.FAILURE
+            state.error = action.error.message
+        }).addCase(addNewQuestion.pending, (state, action) => {
+            state.status = LoadingStatus.PENDING
+        }).addCase(addNewQuestion.fulfilled, (state, action) => {
+            state.items = Object.assign({[action.payload.id] : action.payload}, state.items)
+            state.status = LoadingStatus.SUCCESS
+        }).addCase(addNewQuestion.rejected, (state, action) => {
             state.status = LoadingStatus.FAILURE
             state.error = action.error.message
         })
@@ -30,6 +37,7 @@ export const { getQuestions } = questionsSlice.actions
 export default questionsSlice.reducer
 
 export const fetchQuestions = createAsyncThunk('questions/fetchQuestions', () => _getQuestions())
+export const addNewQuestion = createAsyncThunk('questions/addNewQuestion', (initialQuestion) => _saveQuestion(initialQuestion))
 
 export const selectAllQuestions = createSelector([state => state.questions, (state, authedUser) => authedUser], 
     (questions, authedUser) => (
