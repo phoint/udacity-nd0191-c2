@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSelector, createSlice } from "@reduxjs/toolkit";
 import { LoadingStatus } from "../../app/util";
-import { _getQuestions, _saveQuestion } from "../../_DATA";
+import { _getQuestions, _saveQuestion, _saveQuestionAnswer } from "../../_DATA";
 
 const initialState = {
     items: {},
@@ -24,11 +24,27 @@ const questionsSlice = createSlice({
         }).addCase(addNewQuestion.pending, (state, action) => {
             state.status = LoadingStatus.PENDING
         }).addCase(addNewQuestion.fulfilled, (state, action) => {
-            state.items = Object.assign({[action.payload.id] : action.payload}, state.items)
+            state.items = Object.assign({ [action.payload.id]: action.payload }, state.items)
             state.status = LoadingStatus.SUCCESS
         }).addCase(addNewQuestion.rejected, (state, action) => {
             state.status = LoadingStatus.FAILURE
             state.error = action.error.message
+        }).addCase(saveQuestionAnswer.pending, (state, action) => {
+            state.status = LoadingStatus.PENDING
+        }).addCase(saveQuestionAnswer.fulfilled, (state, action) => {
+            state.status = LoadingStatus.SUCCESS
+            const { authedUser, qid, answer } = action.payload
+            const questions = state.items
+            state.items = {
+                ...questions,
+                [qid]: {
+                    ...questions[qid],
+                    [answer]: {
+                        ...questions[qid][answer],
+                        votes: questions[qid][answer].votes.concat([authedUser])
+                    }
+                }
+            }
         })
     }
 })
@@ -38,6 +54,13 @@ export default questionsSlice.reducer
 
 export const fetchQuestions = createAsyncThunk('questions/fetchQuestions', () => _getQuestions())
 export const addNewQuestion = createAsyncThunk('questions/addNewQuestion', (initialQuestion) => _saveQuestion(initialQuestion))
+export const saveQuestionAnswer = createAsyncThunk('question/saveAnswer', async (answer) => {
+    const isSaved = await _saveQuestionAnswer(answer)
+    return {
+        ...answer,
+        isSaved: true
+    }
+})
 
 export const selectAllQuestions = createSelector([state => state.questions, (state, authedUser) => authedUser], 
     (questions, authedUser) => (

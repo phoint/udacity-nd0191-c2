@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk, createSelector } from "@reduxjs/toolkit";
 import { _getUsers } from "../../_DATA";
 import { LoadingStatus } from "../../app/util";
+import { saveQuestionAnswer } from "../questions/questionSlice";
 
 const initialState = {
     status: LoadingStatus.IDLE,
@@ -16,14 +17,26 @@ const usersSlice = createSlice({
     extraReducers(builder) {
         builder.addCase(fetchUser.pending, (state, action) => {
             state.status = LoadingStatus.PENDING;
-        })
-        .addCase(fetchUser.fulfilled, (state, action) => {
+        }).addCase(fetchUser.fulfilled, (state, action) => {
             state.status = LoadingStatus.SUCCESS;
             state.items = action.payload;
-        })
-        .addCase(fetchUser.rejected, (state, action) => {
+        }).addCase(fetchUser.rejected, (state, action) => {
             state.status = LoadingStatus.FAILURE;
             state.error = action.error.message;
+        }).addCase(saveQuestionAnswer.fulfilled, (state, action) => {
+            state.status = LoadingStatus.SUCCESS;
+            const users = state.items
+            const { authedUser, qid, answer } = action.payload
+            state.items = {
+                ...users,
+                [authedUser]: {
+                    ...users[authedUser],
+                    answers: {
+                        ...users[authedUser].answers,
+                        [qid]: answer
+                    }
+                }
+            }
         })
     }
 })
