@@ -5,29 +5,52 @@ import { useSelector } from 'react-redux';
 export const Dashboard = () => {
     const authedUser = useSelector(state => state.authedUser.id)
     const questionList = useSelector(state => selectAllQuestions(state, authedUser))
+    const answeredQuestions = questionList.filter(question => !question.done)
+    const unansweredQuestions = questionList.filter(question => question.done)
     
 
-    return <div>
+    return (<div>
         <h3>Dashboard</h3>
-        <h4>New question</h4>
-        {questionList
-            .filter(question => !question.done)
-            .map(question => (
-                <div key={question.id}>
-                    <div>{question.id} - {question.author}</div>
-                    <Link to={`/question/${question.id}`}>
-                        <button>Show</button>
-                    </Link>
-                </div>
+        <div className="dashboard-container">
+            <h2>New question</h2>
+            <hr />
+            <div className="questions">
+                {questionList
+                    .filter(question => !question.done)
+                    .map(question => (
+                        <div key={question.id} className="question-card">
+                            <h3>{question.author}</h3>
+                            <p>{question.timestamp}</p>
+                            <Link to={`/question/${question.id}`}>
+                                <button className="show-button">Show</button>
+                            </Link>
+                        </div>
 
-            )
-        )}
-        <h4>Done</h4>
+                    )
+                    )}
+            </div>            
+        </div>
+        <div className="dashboard-container">
+        <h2>Done</h2>
+        <hr/>
+        <div className="questions">
+
+
+
         {questionList
             .filter(question => question.done)
             .map(question => (
-            <div key={question.id}>{question.id} - {question.author}</div>
+                <div key={question.id} className="question-card">
+                <h3>{question.author}</h3>
+                <p>{question.timestamp}</p>
+                <Link to={`/question/${question.id}`}>
+                    <button className="show-button">Show</button>
+                </Link>
+                </div>
             )
         )}
-    </div>
+        </div>
+        </div>
+        </div>
+        )
 }

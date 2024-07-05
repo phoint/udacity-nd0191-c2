@@ -27,11 +27,18 @@ export const NewQuestion = () => {
     }
 
     return (
-        <div>
-            <div>New Question</div>
-            <input type="text" placeholder="add option one" value = {optionOneText} onChange={e => setOptionOneText(e.target.value)}/>
-            <input type="text" placeholder="add option two" value = {optionTwoText} onChange={e => setOptionTwoText(e.target.value)}/>
-            <button onClick={onSaveQuestionClicked}>Submit</button>
+        <div className="form-container">
+            <h2>Would You Rather</h2>
+            <p className="sub-heading">Create Your Own Poll</p>
+            <div className="form">
+                <div className="form-group">
+                    <label>First Option</label>
+                    <input type="text" placeholder="Option One" value={optionOneText} onChange={e => setOptionOneText(e.target.value)} />
+                    <label>Second Option</label>
+                    <input type="text" placeholder="Option Two" value={optionTwoText} onChange={e => setOptionTwoText(e.target.value)} />
+                    <button className="submit-button" onClick={onSaveQuestionClicked} disabled={!canSave}>Submit</button>
+                </div>
+            </div>
         </div>
     )
 }

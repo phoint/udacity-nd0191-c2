@@ -33,24 +33,23 @@ function App() {
   }
 
   return (
+    <div className='container'>
+
     <Fragment>
-      <Nav/>
-      <div className="App">
-        <Routes>
+      <Nav />
+      <Routes>
 
-            <Route path="/" exact element={<Dashboard />} />
-            <Route path="/question/:id" exact Component={Poll} />
-            <Route path="/new" exact element={<NewQuestion />} />
-            <Route path="/leaderboard" exact element={<Leaderboard />} />
-
-
-        </Routes>
+        <Route path="/" exact element={<Dashboard />} />
+        <Route path="/question/:id" exact Component={Poll} />
+        <Route path="/new" exact element={<NewQuestion />} />
+        <Route path="/leaderboard" exact element={<Leaderboard />} />
+      </Routes>
       {/* {loadingQuestion === LoadingStatus.SUCCESS && <Dashboard/>} */}
       {/* {loadingUser === LoadingStatus.SUCCESS && <Poll id="8xf0y6ziyjabvozdd253nd"/>} */}
       {/* { authedUser && <NewQuestion/>} */}
       {/* {loadingUser === LoadingStatus.SUCCESS && <Leaderboard/>} */}
-      </div>
     </Fragment>
+    </div>
   );
 }
 

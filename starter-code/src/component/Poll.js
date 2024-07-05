@@ -20,7 +20,7 @@ export const Poll = () => {
     }
     console.log("Question Id: ", id);
     const question = useSelector(state => getQuestionById(state, id))
-    const author = useSelector(state => getUserById(state, question.author))
+    const author = useSelector(state => getUserById(state, question ? question.author : ''))
     console.log("Question: ", question)
     const fullLoaded = [loadingQuestion, loadingUser].every(loading => loading === LoadingStatus.SUCCESS)
 
@@ -46,18 +46,20 @@ export const Poll = () => {
 
 
     return (fullLoaded &&
-        <div>
-            <h2>{author.name}</h2>
-            <img src={author.avatar} />
-            <h3>Would you rather</h3>
-            <div>
-                <div>
-                    <h4>{question.optionOne.text}</h4>
-                    <button onClick={onClickOptionOne}>Click</button>
+        <div className="poll-container">
+            <h2>Poll by {author.name}</h2>
+            <div className="poll-header">
+                <img src={author.avatarURL} />
+                <h3>Would you rather</h3>
+            </div>
+            <div className="poll-options">
+                <div className="option">
+                    <p>{question.optionOne.text}</p>
+                    <button className="vote-button" onClick={onClickOptionOne}>Click</button>
                 </div>
-                <div>
-                    <h4>{question.optionTwo.text}</h4>
-                    <button onClick={onClickOptionTwo}>Click</button>
+                <div className="option">
+                    <p>{question.optionTwo.text}</p>
+                    <button className="vote-button" onClick={onClickOptionTwo}>Click</button>
                 </div>
             </div>
         </div>
