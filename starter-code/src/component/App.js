@@ -1,7 +1,7 @@
 import logo from '../logo.svg';
 import '../App.css';
 import { useDispatch, useSelector} from 'react-redux'
-import { useEffect, Fragment } from 'react';
+import { useEffect, Fragment, useRef } from 'react';
 import { Dashboard } from './DashBoard';
 import { fetchQuestions } from '../features/questions/questionSlice';
 import { login } from '../features/authedUser/authedUserSlice';
@@ -10,6 +10,7 @@ import { Poll } from './Poll';
 import { LoadingStatus } from '../app/util';
 import { NewQuestion } from './NewQuestion';
 import { Leaderboard } from './Leaderboard';
+import LoadingBar from 'react-top-loading-bar';
 import { Route, Routes } from 'react-router-dom';
 import Nav from './Nav';
 
@@ -18,7 +19,9 @@ function App() {
   const loadingQuestion = useSelector(state => state.questions.status)
   const loadingUser = useSelector(state => state.users.status)
   const authedUser = useSelector(state => state.authedUser.id)
+  const ref = useRef(null)
   useEffect(() => {
+    ref.current.continuousStart();
     handleInitialData(dispatch);
   }
   ,[dispatch])
@@ -30,12 +33,14 @@ function App() {
       }));
       dispatch(fetchQuestions());
       dispatch(fetchUser());
+      ref.current.complete();
   }
 
   return (
     <div className='container'>
 
     <Fragment>
+      <LoadingBar color="#f11946" ref={ref} shadow="true" />
       <Nav />
       <Routes>
 

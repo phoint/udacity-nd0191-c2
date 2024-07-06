@@ -7,22 +7,14 @@ import { LoadingStatus } from "../app/util"
 
 export const Poll = () => {
     const { id } = useParams();
-    const loadingQuestion = useSelector(state => state.questions.status)
-    const loadingUser = useSelector(state => state.users.status)
     const authedUser = useSelector(state => state.authedUser.id)
     const dispatch = useDispatch()
 
-    if (loadingQuestion === LoadingStatus.IDLE) {
-        dispatch(fetchQuestions())
-    }
-    if (loadingUser === LoadingStatus.IDLE) {
-        dispatch(fetchUser())
-    }
     console.log("Question Id: ", id);
     const question = useSelector(state => getQuestionById(state, id))
     const author = useSelector(state => getUserById(state, question ? question.author : ''))
     console.log("Question: ", question)
-    const fullLoaded = [loadingQuestion, loadingUser].every(loading => loading === LoadingStatus.SUCCESS)
+    const fullLoaded = question && author;
 
     const onClickOptionOne = () => {
         const answer = {
