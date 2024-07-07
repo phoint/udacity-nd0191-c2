@@ -13,6 +13,8 @@ import { Leaderboard } from './Leaderboard';
 import LoadingBar from 'react-top-loading-bar';
 import { Route, Routes } from 'react-router-dom';
 import Nav from './Nav';
+import Login from './Login';
+import NotFound from './NotFound';
 
 function App() {
   const dispatch = useDispatch()
@@ -27,10 +29,10 @@ function App() {
   ,[dispatch])
 
   const handleInitialData = (dispatch) => {
-      dispatch(login({
-        id:"sarahedo",
-        name:"Sarah Edo"
-      }));
+      // dispatch(login({
+      //   id:"sarahedo",
+      //   name:"Sarah Edo"
+      // }));
       dispatch(fetchQuestions());
       dispatch(fetchUser());
       ref.current.complete();
@@ -41,13 +43,14 @@ function App() {
 
     <Fragment>
       <LoadingBar color="#f11946" ref={ref} shadow="true" />
-      <Nav />
+      {loadingUser === LoadingStatus.SUCCESS && <Nav />}
       <Routes>
-
+        <Route path='/login' exact element={<Login />} />
         <Route path="/" exact element={<Dashboard />} />
         <Route path="/question/:id" exact Component={Poll} />
         <Route path="/new" exact element={<NewQuestion />} />
         <Route path="/leaderboard" exact element={<Leaderboard />} />
+        <Route path="*" exact element={<NotFound />} />
       </Routes>
       {/* {loadingQuestion === LoadingStatus.SUCCESS && <Dashboard/>} */}
       {/* {loadingUser === LoadingStatus.SUCCESS && <Poll id="8xf0y6ziyjabvozdd253nd"/>} */}
