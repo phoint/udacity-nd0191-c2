@@ -15,6 +15,7 @@ import { Route, Routes } from 'react-router-dom';
 import Nav from './Nav';
 import Login from './Login';
 import NotFound from './NotFound';
+import Protected from './Protected';
 
 function App() {
   const dispatch = useDispatch()
@@ -40,23 +41,42 @@ function App() {
 
   return (
     <div className='container'>
-
-    <Fragment>
-      <LoadingBar color="#f11946" ref={ref} shadow="true" />
-      {loadingUser === LoadingStatus.SUCCESS && <Nav />}
-      <Routes>
-        <Route path='/login' exact element={<Login />} />
-        <Route path="/" exact element={<Dashboard />} />
-        <Route path="/question/:id" exact Component={Poll} />
-        <Route path="/new" exact element={<NewQuestion />} />
-        <Route path="/leaderboard" exact element={<Leaderboard />} />
-        <Route path="*" exact element={<NotFound />} />
-      </Routes>
-      {/* {loadingQuestion === LoadingStatus.SUCCESS && <Dashboard/>} */}
-      {/* {loadingUser === LoadingStatus.SUCCESS && <Poll id="8xf0y6ziyjabvozdd253nd"/>} */}
-      {/* { authedUser && <NewQuestion/>} */}
-      {/* {loadingUser === LoadingStatus.SUCCESS && <Leaderboard/>} */}
-    </Fragment>
+      <Fragment>
+        <LoadingBar color="#f11946" ref={ref} shadow="true" />
+        {loadingUser === LoadingStatus.SUCCESS && <Nav />}
+        <Routes>
+          <Route path="/" exact element={
+            <Protected>
+              <Dashboard />
+            </Protected>
+          } />
+          <Route path="/question/:id" exact element={
+            <Protected>
+              <Poll />
+            </Protected>
+          } />
+          <Route path="/new" exact element={
+            <Protected>
+              <NewQuestion />
+            </Protected>
+          } />
+          <Route path="/leaderboard" exact element={
+            <Protected>
+              <Leaderboard />
+            </Protected>
+          } />
+          <Route path="*" exact element={
+            <Protected>
+              <NotFound />
+            </Protected>
+          } />
+          <Route path='/login' exact element={<Login />} />
+        </Routes>
+        {/* {loadingQuestion === LoadingStatus.SUCCESS && <Dashboard/>} */}
+        {/* {loadingUser === LoadingStatus.SUCCESS && <Poll id="8xf0y6ziyjabvozdd253nd"/>} */}
+        {/* { authedUser && <NewQuestion/>} */}
+        {/* {loadingUser === LoadingStatus.SUCCESS && <Leaderboard/>} */}
+      </Fragment>
     </div>
   );
 }

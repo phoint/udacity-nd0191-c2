@@ -10,14 +10,6 @@ export const authedUserSlice = createSlice({
     },
     reducers: {
         logout: (state, action) => {
-            state = {
-                id: null,
-                name: null,
-                error: null,
-                isAuthenticated: false
-            };
-        },
-        refresh: (state, action) => {
             Object.assign(state, {
                 id: null,
                 name: null,
@@ -40,10 +32,10 @@ export const authedUserSlice = createSlice({
     }
 })
 
-export const { refresh, logout } = authedUserSlice.actions
+export const { logout } = authedUserSlice.actions
 export default authedUserSlice.reducer
 
-export const authenticate = createAsyncThunk('authedUser/authenticate', ({email, password}, thunkAPI) => {
+export const authenticate = createAsyncThunk('authedUser/authenticate', async ({email, password}, thunkAPI) => {
     const { users } = thunkAPI.getState();
     console.log(JSON.stringify(users))
     const authedUser = Object.entries(users.items).find(([key, value]) => (value.id === email && value.password === password), null)

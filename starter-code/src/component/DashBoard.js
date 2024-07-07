@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { selectAllQuestions } from "../features/questions/questionSlice"
 import { useSelector } from 'react-redux';
+import {format} from 'date-fns';
 
 export const Dashboard = () => {
     const authedUser = useSelector(state => state.authedUser.id)
@@ -8,6 +9,11 @@ export const Dashboard = () => {
     const answeredQuestions = questionList.filter(question => !question.done)
     const unansweredQuestions = questionList.filter(question => question.done)
     
+    const formatDateTime = (timestamp) => {
+        const date = new Date(timestamp)
+        const formattedDate = format(date, 'hh:mm:a | MM/dd/yyyy')
+        return formattedDate;
+    }
 
     return (<div>
         <h3>Dashboard</h3>
@@ -20,7 +26,7 @@ export const Dashboard = () => {
                     .map(question => (
                         <div key={question.id} className="question-card">
                             <h3>{question.author}</h3>
-                            <p>{question.timestamp}</p>
+                            <p>{formatDateTime(question.timestamp)}</p>
                             <Link to={`/question/${question.id}`}>
                                 <button className="show-button">Show</button>
                             </Link>
@@ -42,7 +48,7 @@ export const Dashboard = () => {
             .map(question => (
                 <div key={question.id} className="question-card">
                 <h3>{question.author}</h3>
-                <p>{question.timestamp}</p>
+                <p>{formatDateTime(question.timestamp)}</p>
                 <Link to={`/question/${question.id}`}>
                     <button className="show-button">Show</button>
                 </Link>

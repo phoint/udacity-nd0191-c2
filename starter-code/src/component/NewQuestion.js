@@ -2,26 +2,26 @@ import { useState } from "react"
 import { useSelector, useDispatch} from 'react-redux'
 import { LoadingStatus } from "../app/util"
 import { addNewQuestion } from "../features/questions/questionSlice"
+import { useLocation, useNavigate } from "react-router-dom"
 
 export const NewQuestion = () => {
     const [optionOneText, setOptionOneText] = useState('')
     const [optionTwoText, setOptionTwoText] = useState('')
-    const [addQuestionRequest, setAddQuestionRequest] = useState(LoadingStatus.IDLE)
     const author = useSelector(state => state.authedUser.id)
     const dispatch = useDispatch()
+    const navigate = useNavigate()
+    const location = useLocation()
 
-    const canSave = [optionOneText, optionTwoText, author].every(Boolean) && addQuestionRequest === LoadingStatus.IDLE
+    const canSave = [optionOneText, optionTwoText, author].every(Boolean)
     const onSaveQuestionClicked = async () => {
         if (canSave) {
             try {
-                setAddQuestionRequest(LoadingStatus.PENDING)
                 await dispatch(addNewQuestion({optionOneText,optionTwoText, author})).unwrap()
                 setOptionOneText('')
                 setOptionTwoText('')
+                navigate("/", {replace: true, state: {from: location}})
             } catch (error) {
                 alert('Error while adding New Question. \n', error.message)
-            } finally {
-                setAddQuestionRequest(LoadingStatus.IDLE)
             }
         }
     }

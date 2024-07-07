@@ -35,6 +35,7 @@ const questionsSlice = createSlice({
             state.status = LoadingStatus.SUCCESS
             const { authedUser, qid, answer } = action.payload
             const questions = state.items
+            const notAnswer = answer === 'optionOne' ? 'optionTwo' : 'optionOne'
             state.items = {
                 ...questions,
                 [qid]: {
@@ -42,6 +43,10 @@ const questionsSlice = createSlice({
                     [answer]: {
                         ...questions[qid][answer],
                         votes: questions[qid][answer].votes.concat([authedUser])
+                    },
+                    [notAnswer] : {
+                        ...questions[qid][notAnswer],
+                        votes: questions[qid][notAnswer].votes.filter(user => user !== authedUser)
                     }
                 }
             }
@@ -69,7 +74,7 @@ export const selectAllQuestions = createSelector([state => state.questions, (sta
             author: question.author,
             timestamp: question.timestamp,
             done: question.optionOne.votes.includes(authedUser) || question.optionTwo.votes.includes(authedUser),
-        }))
+        })).sort((a,b) => b.timestamp - a.timestamp)
     ))
 
 export const getQuestionById = createSelector([state => state.questions, (state, id) => id], (questions, id) => questions.items[id]);

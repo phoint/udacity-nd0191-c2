@@ -1,8 +1,8 @@
 import { useDispatch, useSelector } from "react-redux"
-import { fetchUser, getUserById } from "../features/users/userSlice"
-import { fetchQuestions, getQuestionById, saveQuestionAnswer } from "../features/questions/questionSlice"
+import { getUserById } from "../features/users/userSlice"
+import { getQuestionById, saveQuestionAnswer } from "../features/questions/questionSlice"
 import { useParams } from "react-router-dom"
-import { LoadingStatus } from "../app/util"
+import { useNavigate, useLocation } from "react-router-dom"
 
 
 export const Poll = () => {
@@ -12,9 +12,13 @@ export const Poll = () => {
 
     console.log("Question Id: ", id);
     const question = useSelector(state => getQuestionById(state, id))
-    const author = useSelector(state => getUserById(state, question ? question.author : ''))
+    const author = useSelector(state => getUserById(state, question?.author || ''))
     console.log("Question: ", question)
     const fullLoaded = question && author;
+    const isAnswered = question?.optionOne.votes.includes(authedUser) || question?.optionTwo.votes.includes(authedUser);
+    const totalVotes = (question?.optionOne.votes.length + question?.optionTwo.votes.length || 0);
+    let percntOne = (question?.optionOne.votes.length || 0) / totalVotes * 100;
+    let percntTwo = (question?.optionTwo.votes.length || 0) / totalVotes * 100;
 
     const onClickOptionOne = () => {
         const answer = {
@@ -22,8 +26,9 @@ export const Poll = () => {
             qid: question.id,
             answer: 'optionOne'
         }
-
-        dispatch(saveQuestionAnswer(answer))
+        if (!voted(question.optionOne.votes, authedUser)) {
+            dispatch(saveQuestionAnswer(answer))
+        }
     }
 
     const onClickOptionTwo = () => {
@@ -32,10 +37,12 @@ export const Poll = () => {
             qid: question.id,
             answer: 'optionTwo'
         }
-
-        dispatch(saveQuestionAnswer(answer))
+        if (!voted(question.optionTwo.votes, authedUser)) {
+            dispatch(saveQuestionAnswer(answer))
+        }
     }
 
+    const voted = (votes, userId) => votes.includes(userId)
 
     return (fullLoaded &&
         <div className="poll-container">
@@ -45,11 +52,13 @@ export const Poll = () => {
                 <h3>Would you rather</h3>
             </div>
             <div className="poll-options">
-                <div className="option">
+                <div className={`option ${voted(question.optionOne.votes, authedUser) ? 'voted' : ''}`}>
+                    <p>{isAnswered && percntOne}%</p>
                     <p>{question.optionOne.text}</p>
                     <button className="vote-button" onClick={onClickOptionOne}>Click</button>
                 </div>
-                <div className="option">
+                <div className={`option ${voted(question.optionTwo.votes, authedUser) ? 'voted' : ''}`}>
+                    <p>{isAnswered && percntTwo}%</p>
                     <p>{question.optionTwo.text}</p>
                     <button className="vote-button" onClick={onClickOptionTwo}>Click</button>
                 </div>

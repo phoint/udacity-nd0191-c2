@@ -19,6 +19,7 @@ const Nav = () => {
             </div>
             {authedUser && <div className='button-group'>
                 <img className='avatar' src={authedUser.avatarURL}/>
+                <span>{authedUser.name}</span>
                 <button onClick={() => dispatch(logout())}>Logout</button>
             </div>}
         </nav>
