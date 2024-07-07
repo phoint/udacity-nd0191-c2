@@ -15,7 +15,7 @@ const Nav = () => {
 
             <NavLink to="/">Home</NavLink>
             <NavLink to="/leaderboard">Leaderboard</NavLink>
-            <NavLink to="/new">New</NavLink>
+            <NavLink to="/add">New</NavLink>
             </div>
             {authedUser && <div className='button-group'>
                 <img className='avatar' src={authedUser.avatarURL}/>

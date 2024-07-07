@@ -55,7 +55,7 @@ function App() {
               <Poll />
             </Protected>
           } />
-          <Route path="/new" exact element={
+          <Route path="/add" exact element={
             <Protected>
               <NewQuestion />
             </Protected>
