@@ -1,4 +1,4 @@
-import logo from '../logo.svg';
+import React from 'react';
 import '../App.css';
 import { useDispatch, useSelector} from 'react-redux'
 import { useEffect, Fragment, useRef } from 'react';
@@ -72,10 +72,6 @@ function App() {
           } />
           <Route path='/login' exact element={<Login />} />
         </Routes>
-        {/* {loadingQuestion === LoadingStatus.SUCCESS && <Dashboard/>} */}
-        {/* {loadingUser === LoadingStatus.SUCCESS && <Poll id="8xf0y6ziyjabvozdd253nd"/>} */}
-        {/* { authedUser && <NewQuestion/>} */}
-        {/* {loadingUser === LoadingStatus.SUCCESS && <Leaderboard/>} */}
       </Fragment>
     </div>
   );
