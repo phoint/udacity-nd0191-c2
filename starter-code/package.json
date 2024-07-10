@@ -42,19 +42,27 @@
     ]
   },
   "devDependencies": {
-    "jest": "^27.5.1"
+    "jest": "^27.5.1",
+    "whatwg-fetch": "^3.6.20"
   },
   "jest": {
     "testEnvironment": "jsdom",
-    "setupFilesAfterEnv": ["<rootDir>/jest.setup.js"],
+    "setupFilesAfterEnv": [
+      "<rootDir>/jest.setup.js"
+    ],
     "transform": {
       "^.+\\.(js|jsx)$": "babel-jest"
     },
     "moduleNameMapper": {
       "\\.(css|less|scss|sass)$": "identity-obj-proxy"
     },
-    "moduleFileExtensions": ["js", "jsx"],
-    "testPathIgnorePatterns": ["/node_modules/", "/dist/"]
+    "moduleFileExtensions": [
+      "js",
+      "jsx"
+    ],
+    "testPathIgnorePatterns": [
+      "/node_modules/",
+      "/dist/"
+    ]
   }
-  
 }

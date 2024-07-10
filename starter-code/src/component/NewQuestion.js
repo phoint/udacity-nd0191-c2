@@ -34,9 +34,9 @@ export const NewQuestion = () => {
             <div className="form">
                 <div className="form-group">
                     <label>First Option</label>
-                    <input type="text" placeholder="Option One" value={optionOneText} onChange={e => setOptionOneText(e.target.value)} />
+                    <input type="text" data-testid="option-one-input" placeholder="Option One" value={optionOneText} onChange={e => setOptionOneText(e.target.value)} />
                     <label>Second Option</label>
-                    <input type="text" placeholder="Option Two" value={optionTwoText} onChange={e => setOptionTwoText(e.target.value)} />
+                    <input type="text" data-testid="option-two-input" placeholder="Option Two" value={optionTwoText} onChange={e => setOptionTwoText(e.target.value)} />
                     <button className="submit-button" onClick={onSaveQuestionClicked} disabled={!canSave}>Submit</button>
                 </div>
             </div>

@@ -26,6 +26,7 @@ Object {
               First Option
             </label>
             <input
+              data-testid="option-one-input"
               placeholder="Option One"
               type="text"
               value=""
@@ -34,6 +35,7 @@ Object {
               Second Option
             </label>
             <input
+              data-testid="option-two-input"
               placeholder="Option Two"
               type="text"
               value=""
@@ -71,6 +73,7 @@ Object {
             First Option
           </label>
           <input
+            data-testid="option-one-input"
             placeholder="Option One"
             type="text"
             value=""
@@ -79,6 +82,7 @@ Object {
             Second Option
           </label>
           <input
+            data-testid="option-two-input"
             placeholder="Option Two"
             type="text"
             value=""
@@ -143,6 +147,13 @@ Object {
   "queryByText": [Function],
   "queryByTitle": [Function],
   "rerender": [Function],
+  "store": Object {
+    "@@observable": [Function],
+    "dispatch": [Function],
+    "getState": [Function],
+    "replaceReducer": [Function],
+    "subscribe": [Function],
+  },
   "unmount": [Function],
 }
 `;

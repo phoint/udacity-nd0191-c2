@@ -1,6 +1,6 @@
 import React from "react";
 import { act } from "react";
-import { setupStore } from "./store";
+import { setupStore } from "../app/store";
 import { render } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { RouterProvider, createMemoryRouter } from "react-router-dom";
@@ -20,8 +20,8 @@ export const renderWithProviders = (
         // Automatically create a store instance if no store was passed in
         store = setupStore(preloadedState),
         routes = [
-            {path : '/', element : <Dashboard />},
-            {path : '/add', element : <NewQuestion />},
+            {path : '/', element : <Protected><Dashboard /></Protected>},
+            {path : '/add', element : <Protected><NewQuestion /></Protected>},
             {path : '/leaderboard', element : <Protected><Leaderboard /></Protected>},
             {path : '/login', element : <Login/>}
         ],
@@ -32,11 +32,14 @@ export const renderWithProviders = (
     act(() => {
         rendered = render(
             <Provider store={store}>
-                <RouterProvider router={router}/>
+                <RouterProvider router={router}>{ui}</RouterProvider>
             </Provider>
         )
     })
 
 
-    return rendered;
+    return {
+        ...rendered,
+        store
+    };
 }
