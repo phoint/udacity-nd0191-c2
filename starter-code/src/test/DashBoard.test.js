@@ -28,7 +28,6 @@ describe('DashBoard', () => {
             await component.store.dispatch(fetchUser())
             await component.store.dispatch(fetchQuestions())
         })
-        // await component.findByText('Login')
         expect(screen.getByRole('button')).toHaveTextContent('Login');
     })
 })

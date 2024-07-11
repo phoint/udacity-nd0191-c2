@@ -4,7 +4,6 @@ import { useDispatch, useSelector} from 'react-redux'
 import { useEffect, Fragment, useRef } from 'react';
 import { Dashboard } from './DashBoard';
 import { fetchQuestions } from '../features/questions/questionSlice';
-import { login } from '../features/authedUser/authedUserSlice';
 import { fetchUser } from '../features/users/userSlice';
 import { Poll } from './Poll';
 import { LoadingStatus } from '../app/util';
@@ -19,9 +18,7 @@ import Protected from './Protected';
 
 function App() {
   const dispatch = useDispatch()
-  const loadingQuestion = useSelector(state => state.questions.status)
   const loadingUser = useSelector(state => state.users.status)
-  const authedUser = useSelector(state => state.authedUser.id)
   const ref = useRef(null)
   useEffect(() => {
     ref.current.continuousStart();
@@ -30,10 +27,6 @@ function App() {
   ,[dispatch])
 
   const handleInitialData = (dispatch) => {
-      // dispatch(login({
-      //   id:"sarahedo",
-      //   name:"Sarah Edo"
-      // }));
       dispatch(fetchQuestions());
       dispatch(fetchUser());
       ref.current.complete();

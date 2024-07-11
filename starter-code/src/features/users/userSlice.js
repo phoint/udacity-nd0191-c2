@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk, createSelector } from "@reduxjs/toolkit";
 import { _getUsers } from "../../_DATA";
 import { LoadingStatus } from "../../app/util";
-import { saveQuestionAnswer } from "../questions/questionSlice";
+import { saveQuestionAnswer,addNewQuestion } from "../questions/questionSlice";
 
 const initialState = {
     status: LoadingStatus.IDLE,
@@ -37,6 +37,18 @@ const usersSlice = createSlice({
                     }
                 }
             }
+        }).addCase(addNewQuestion.fulfilled, (state, action) => {
+            state.status =LoadingStatus.SUCCESS;
+            const users = state.items;
+            const {author, id} = action.payload;
+            state.items = {
+                ...users,
+                [author]: {
+                    ...users[author],
+                    questions: users[author].questions.concat([id])
+                }
+            }
+
         })
     }
 })
@@ -62,6 +74,6 @@ export const selectUserByLeaderdoard = createSelector([state => state.users],
             question: questions.length,
             answer: Object.entries(answers).length
         }
-    }))
+    }).sort((a,b) => (b.answer + b.question) - (a.answer + a.question)))
 
 export const getUserById = createSelector([state => state.users, (state, userId) => userId], (users, userId) => (users.items[userId]))

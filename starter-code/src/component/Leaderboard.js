@@ -22,7 +22,7 @@ export const Leaderboard = () => {
                             <td>
                                 <div className="user-block">
 
-                                <img src={u.avatarURL} className="avatar"/>
+                                <img src={u.avatarURL} className="avatar" alt={u.name}/>
                                 <div>
 
                                 <div>

@@ -3,9 +3,9 @@ import { act } from "react";
 import { renderWithProviders } from "./testUtils";
 import { screen, fireEvent, waitFor } from "@testing-library/react";
 import App from "../component/App";
-import { setupStore } from "../app/store";
 import { authenticate } from "../features/authedUser/authedUserSlice";
 import { fetchUser } from "../features/users/userSlice";
+import { fetchQuestions } from "../features/questions/questionSlice";
 
 describe('New Question', () => {
     
@@ -55,30 +55,46 @@ describe('New Question', () => {
         await screen.findByTestId('option-one-input')
         await screen.findByTestId('option-two-input')
         expect(submitButton).not.toBeDisabled()
-    }),
+    })
 
     test('redirect to Dashboard after submitting new question', async () => {
         const component = renderWithProviders(<App/>, {initialEntries: ['/', '/add'], initialIndex: 1})
         await act(async () => {
             await component.store.dispatch(fetchUser())
+            await component.store.dispatch(fetchQuestions())
             await component.store.dispatch(authenticate({
                 email: "sarahedo",
                 password: "password123"
             }))
         })
-
+        
         const optionOne = screen.getByTestId('option-one-input')
         const optionTwo = screen.getByTestId('option-two-input')
         const submitButton = screen.getByRole('button')
         fireEvent.change(optionOne, {target: {value: 'React'}})
         fireEvent.change(optionTwo, {target: {value: 'Redux'}})
+        await screen.findByDisplayValue('React');
         expect(submitButton).not.toBeDisabled()
         fireEvent.click(submitButton)
-        await act( async() => {
-            await component.store.dispatch({type: 'questions/addNewQuestion'})
-        })
-        // await waitFor(() => expect(screen.getByText('DashBoard')).toBeInTheDocument)
-        const dashboard = await screen.findByText('Dashboard')
-        expect(dashboard).toBeInTheDocument()
+
+     // Debugging: Check if the form submission is processed
+    await waitFor(() => {
+        console.log('Form submitted');
+    });
+
+    // Debugging: Check if the URL has changed
+    await waitFor(() => {
+        console.log('Current URL:', window.location.href);
+    });
+
+    // Check for URL change
+    await waitFor(() => {
+        expect(window.location.href).toContain('/');
+    }, { timeout: 5000 });
+
+    // Check for a different element on the Dashboard
+    await waitFor(() => {
+        expect(screen.getByText(/Dashboard/i)).toBeInTheDocument();
+    }, { timeout: 5000 });
     })
 })

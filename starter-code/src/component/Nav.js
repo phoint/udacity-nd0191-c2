@@ -1,10 +1,10 @@
 import { useDispatch, useSelector } from 'react-redux';
-import {Link, NavLink} from'react-router-dom'
+import {NavLink} from'react-router-dom'
 import { getUserById } from '../features/users/userSlice';
 import { logout } from '../features/authedUser/authedUserSlice';
 
 const Nav = () => {
-    const {id, isAuthenticated} = useSelector(state => state.authedUser)
+    const {id} = useSelector(state => state.authedUser)
     const authedUser = useSelector(state => getUserById(state, id))
     const dispatch = useDispatch()
 
@@ -18,7 +18,7 @@ const Nav = () => {
             <NavLink to="/add">New</NavLink>
             </div>
             {authedUser && <div className='button-group'>
-                <img className='avatar' src={authedUser.avatarURL}/>
+                <img className='avatar' src={authedUser.avatarURL} alt={authedUser.name}/>
                 <span>{authedUser.name}</span>
                 <button onClick={() => dispatch(logout())}>Logout</button>
             </div>}

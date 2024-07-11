@@ -63,7 +63,7 @@ export const saveQuestionAnswer = createAsyncThunk('question/saveAnswer', async 
     const isSaved = await _saveQuestionAnswer(answer)
     return {
         ...answer,
-        isSaved: true
+        isSaved: isSaved
     }
 })
 

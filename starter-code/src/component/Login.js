@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import './Login.css';
 import { useDispatch, useSelector } from 'react-redux';
-import { authenticate, refresh } from '../features/authedUser/authedUserSlice';
+import { authenticate } from '../features/authedUser/authedUserSlice';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 const Login = () => {

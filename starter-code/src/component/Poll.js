@@ -2,7 +2,6 @@ import { useDispatch, useSelector } from "react-redux"
 import { getUserById } from "../features/users/userSlice"
 import { getQuestionById, saveQuestionAnswer } from "../features/questions/questionSlice"
 import { useParams } from "react-router-dom"
-import { useNavigate, useLocation } from "react-router-dom"
 
 
 export const Poll = () => {
@@ -48,7 +47,7 @@ export const Poll = () => {
         <div className="poll-container">
             <h2>Poll by {author.name}</h2>
             <div className="poll-header">
-                <img src={author.avatarURL} />
+                <img src={author.avatarURL} alt={author.name}/>
                 <h3>Would you rather</h3>
             </div>
             <div className="poll-options">
